@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import Canvas from './components/canvas.jsx'
 import './App.css'
 
 function App() {
+  const [canvasData, setCanvasData] = useState(null)
+
   function handleCanvasSizeSubmit(event) {
     event.preventDefault()
     const canvasData = {
@@ -9,6 +12,8 @@ function App() {
       width: parseInt(document.getElementById('width').value),
       height: parseInt(document.getElementById('height').value)
     }
+
+    setCanvasData(canvasData)
   }
 
   return (

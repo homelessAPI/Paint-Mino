@@ -1,13 +1,16 @@
 import App from './App.jsx'
 
 
-function canvas() {
+function canvas({width, height, canvasName}) {
+    
     return (
         <>
         <div id="canvasSetup">
-            <canvas id="canvas"></canvas>
+            <canvas id="canvas" width={width} height={height}></canvas>
             <button id="Save-image">Save Image</button>
         </div>
         </>
     )
 }
+
+export default canvas
