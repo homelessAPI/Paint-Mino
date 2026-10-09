@@ -2,11 +2,19 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
+  function handleCanvasSizeSubmit(event) {
+    event.preventDefault()
+    const canvasData = {
+      canvasName: document.getElementById('canvasName').value,
+      width: parseInt(document.getElementById('width').value),
+      height: parseInt(document.getElementById('height').value)
+    }
+  }
 
   return (
     <>
       <div id="canvasSetup">
-        <form id="canvasSizeForm">
+        <form id="canvasSizeForm" onSubmit={handleCanvasSizeSubmit}>
             <label for="canvasName">Canvas Name:</label>
             <input type="text" id="canvasName" name="canvasName" required/>
             <label for="width">Width:</label>
