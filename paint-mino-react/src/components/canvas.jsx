@@ -28,6 +28,10 @@ function Canvas() {
         }
     }
 
+    function pointerUp() {
+        isDrawing = False
+    }
+
     if (!canvasData) {
         return (
             <p>No canvas data available. Please create a canvas first.</p>
@@ -36,7 +40,7 @@ function Canvas() {
     <>
     <div id="canvasContainer">
         <h1>{canvasData.name}</h1>
-        <canvas id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} width={canvasData.width} height={canvasData.height}></canvas>
+        <canvas id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
     </div>
     </>
   )
