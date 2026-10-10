@@ -1,45 +1,22 @@
 
 import { useLocation, useNavigate } from 'react-router'
+import '../assets/css/canvas.css'
 
 function Canvas() {
-  const location = useLocation()
-  const navigate = useNavigate()
+    const location = useLocation()
+    const canvasData = location.state
 
-  const canvasData = location.state
-
-  if (!canvasData) {
-    return (
-      <div>
-        <h2>No canvas selected</h2>
-        <button onClick={() => navigate('/')}>
-          Back to Setup
-        </button>
-      </div>
-    )
-  }
-
+    if (!canvasData) {
+        return (
+            <p>No canvas data available. Please create a canvas first.</p>
+        )}
   return (
-    <div id="workspace">
-      <h1>{canvasData.canvasName}</h1>
-
-      <canvas
-        id="canvas"
-        width={canvasData.width}
-        height={canvasData.height}
-        style={{
-          border: '1px solid black',
-          maxWidth: '100%',
-          height: 'auto'
-        }}
-      />
-
-      <div>
-        <button>Save Image</button>
-        <button onClick={() => navigate('/')}>
-          Back to Setup
-        </button>
-      </div>
+    <>
+    <div id="canvasContainer">
+        <h1>{canvasData.name}</h1>
+        <canvas id='canvas' width={canvasData.width} height={canvasData.height}></canvas>
     </div>
+    </>
   )
 }
 
