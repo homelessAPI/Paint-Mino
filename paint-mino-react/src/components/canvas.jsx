@@ -1,5 +1,5 @@
 
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 import { drawingTools } from './drawingTools'
 import {useState, useRef} from 'react'
 import '../assets/CSS/canvas.css'
@@ -19,7 +19,6 @@ function Canvas() {
     let isDrawing = useRef(false)
     let lastX = useRef(0)
     let lastY = useRef(0)
-    let currenttool = useRef(drawingtools.pen)
 
     function pointerDown(e) {
         isDrawing.current = true
@@ -63,7 +62,7 @@ function Canvas() {
         <button onClick={() => setActiveTool('pen')} id='brushTool'>Pen</button>
         <input id='brushSize' type='range' min={1} max={100} name='brushSize' value={brushSize} onChange={(e) => setbrushSize(Number(e.target.value))}/>
         <button onClick={() => setActiveTool('eraser')} id='eraserTool'>Eraser</button>
-        <input id='eraserSize' type='range' min={1} max={100} name='eraserSize' value={eraserSize} onChange={(e) => seteraserSize(Number(e.target.value))}/>
+        <input id='eraserSize' type='range' min={1} max={200} name='eraserSize' value={eraserSize} onChange={(e) => seteraserSize(Number(e.target.value))}/>
         <canvas ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} onMouseLeave={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
     </div>
     </>
