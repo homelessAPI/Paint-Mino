@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import Canvas from './components/canvas.jsx'
 import './App.css'
 
 function App() {
-  const [canvasData, setCanvasData] = useState(null)
+  const Navigate = useNavigate()
 
   function handleCanvasSizeSubmit(event) {
     event.preventDefault()
@@ -30,6 +30,13 @@ function App() {
         </form>
       </div>
 
+            {canvasData && (
+        <Canvas
+          width={canvasData.width}
+          height={canvasData.height}
+          canvasName={canvasData.canvasName}
+        />
+      )}
       <div id="savedImages">
         <h2>Saved Images</h2>
         <div id="savedImagesContainer"></div>
