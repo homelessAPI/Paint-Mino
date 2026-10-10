@@ -1,16 +1,46 @@
-import App from '../App.jsx'
 
+import { useLocation, useNavigate } from 'react-router'
 
-function canvas({width, height, canvasName}) {
-    
+function Canvas() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const canvasData = location.state
+
+  if (!canvasData) {
     return (
-        <>
-        <div id="canvasSetup">
-            <canvas id="canvas" width={width} height={height}></canvas>
-            <button id="Save-image">Save Image</button>
-        </div>
-        </>
+      <div>
+        <h2>No canvas selected</h2>
+        <button onClick={() => navigate('/')}>
+          Back to Setup
+        </button>
+      </div>
     )
+  }
+
+  return (
+    <div id="workspace">
+      <h1>{canvasData.canvasName}</h1>
+
+      <canvas
+        id="canvas"
+        width={canvasData.width}
+        height={canvasData.height}
+        style={{
+          border: '1px solid black',
+          maxWidth: '100%',
+          height: 'auto'
+        }}
+      />
+
+      <div>
+        <button>Save Image</button>
+        <button onClick={() => navigate('/')}>
+          Back to Setup
+        </button>
+      </div>
+    </div>
+  )
 }
 
-export default canvas
+export default Canvas
