@@ -1,11 +1,10 @@
 
-import { useLocation, useNavigate, useRef } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
     const location = useLocation()
     const canvasData = location.state
-    const canvasRef = useRef(null)
 
     function pointerDown(e) {
         isDrawing = true
