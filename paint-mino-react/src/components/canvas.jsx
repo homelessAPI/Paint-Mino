@@ -3,6 +3,10 @@ import { useLocation, useNavigate } from 'react-router'
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
+    let isDrawing = false
+    let lastX = 0
+    let lastY = 0
+
     const location = useLocation()
     const canvasData = location.state
 
@@ -18,9 +22,12 @@ function Canvas() {
             const_X = e.offsetX
             const_Y = e.offsetY
 
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(x, y);
+            ctx.beginPath(); 
+            ctx.moveTo(lastX, lastY); 
+            ctx.lineTo(x, y); 
+            ctx.strokeStyle = 'black'; 
+            ctx.lineWidth = 2; 
+            ctx.stroke();
 
             lastX = x
             lastY = y
