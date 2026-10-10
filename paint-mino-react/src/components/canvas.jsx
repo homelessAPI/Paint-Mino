@@ -1,26 +1,31 @@
 
 import { useLocation, useNavigate } from 'react-router'
+import {useRef} from 'react'
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
-    let isDrawing = false
-    let lastX = 0
-    let lastY = 0
+    let isDrawing = useRef(false)
+    let lastX = useRef(0)
+    let lastY = useRef(0)
+
+    const canvasRef = useRef(null)
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
 
     const location = useLocation()
     const canvasData = location.state
 
     function pointerDown(e) {
-        isDrawing = true
+        isDrawing.current = true
 
-        lastX = e.offsetX;
-        lastY = e.offsetY;
+        lastX.current = e.offsetX;
+        lastY.current = e.offsetY;
     }
 
     function pointerMove(e) {
         if (isDrawing) {
-            const_X = e.offsetX
-            const_Y = e.offsetY
+            const x = e.offsetX
+            const y = e.offsetY
 
             ctx.beginPath(); 
             ctx.moveTo(lastX, lastY); 
@@ -35,7 +40,7 @@ function Canvas() {
     }
 
     function pointerUp() {
-        isDrawing = False
+        isDrawing = false
     }
 
     if (!canvasData) {
@@ -46,7 +51,7 @@ function Canvas() {
     <>
     <div id="canvasContainer">
         <h1>{canvasData.name}</h1>
-        <canvas id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
+        <canvas ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
     </div>
     </>
   )
