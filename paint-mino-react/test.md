@@ -144,6 +144,8 @@ brushTool.addEventListener('click', () => {
 eraserTool.addEventListener('click', () => {
     currentTool = eraser();
 });
+
+
 drawingTools.js
 const canvas = document.getElementById('canvas');
 
@@ -168,3 +170,211 @@ export function eraser() {
     ctx.stroke();
 
 }
+
+
+
+
+
+
+
+import {pen, eraser} from './drawingTools.js';
+
+let isDrawing = false;
+
+let lastX = 0;
+
+let lastY = 0;
+
+let currentTool = pen;
+
+const canvasName = document.getElementById('canvasName');
+
+const width = document.getElementById('width');
+
+const height = document.getElementById('height');
+
+const canvas = document.getElementById('canvas');
+
+const saveImageButton = document.getElementById('saveImageButton');
+
+const savedPaintings = localStorage.getItem('myPaintings') ? JSON.parse(localStorage.getItem('myPaintings')) : [];
+
+const ctx = canvas.getContext('2d');
+
+const brushTool = document.getElementById('brushTool');
+
+const eraserTool = document.getElementById('eraserTool');
+
+const workspace = document.getElementById('workspace');
+
+const canvasSetup = document.getElementById('canvasSetup');
+
+const savedImagesContainer = document.getElementById('savedImagesContainer');
+
+const savedImages = document.getElementById('savedImages');
+
+const ImgElement = document.createElement('img');
+
+
+
+const form = document.getElementById('canvasSizeForm');
+
+const paintings = savedPaintings;
+
+form.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    canvas.width = width.value;
+
+    canvas.height = height.value;
+
+    canvasSetup.style.display = 'none';
+
+    workspace.style.display = 'block';
+
+    savedImages.style.display = 'none';
+
+});
+
+canvas.addEventListener('pointerdown', (e) => {
+
+    isDrawing = true;
+
+    lastX = e.offsetX;
+
+    lastY = e.offsetY;
+
+});
+
+canvas.addEventListener('pointermove', (e) => {
+
+    if (isDrawing) {
+
+        const x = e.offsetX;
+
+        const y = e.offsetY;
+
+        ctx.beginPath();
+
+        ctx.moveTo(lastX, lastY);
+
+        ctx.lineTo(x, y);
+
+        currentTool();
+
+        ctx.stroke();
+
+        lastX = x;
+
+        lastY = y;
+
+    };
+
+});
+
+canvas.addEventListener('pointerup', (e) => {
+
+    isDrawing = false;
+
+});
+
+saveImageButton.addEventListener('click', () => {
+
+    const image = canvas.toDataURL();
+
+    const painting = {
+
+        name: canvasName.value,
+
+        width: canvas.width,
+
+        height: canvas.height,
+
+        image: image
+
+    };
+
+    paintings.push(painting);
+
+    const paintingData = JSON.stringify(paintings);
+
+    localStorage.setItem('myPaintings', paintingData);
+
+    console.log('painting saved:', paintings);
+
+});
+
+
+
+for (let i = 0; i < savedPaintings.length; i++) {
+
+    const savedPainting = savedPaintings[i];
+
+    const ButtonElement = document.createElement('button');
+
+    ButtonElement.type = 'button';
+
+    ButtonElement.textContent = savedPainting.name;
+
+    const ImgElement = document.createElement('img');
+
+    ImgElement.src = savedPainting.image;
+
+    ImgElement.alt = savedPainting.name;
+
+    ImgElement.width = savedPainting.width / 4;
+
+    ImgElement.height = savedPainting.height / 4;
+
+    ButtonElement.appendChild(ImgElement);
+
+    savedImagesContainer.appendChild(ButtonElement);
+
+    ButtonElement.addEventListener('click', () => {
+
+        console.log('Loading painting:', savedPainting.name);
+
+        const img = new Image();
+
+        img.onload = () => {
+
+            console.log('Loading painting:', savedPainting.width, savedPainting.height);
+
+            *// Restore the original canvas dimensions*
+
+            canvas.width = savedPainting.width;
+
+            canvas.height = savedPainting.height;
+
+            *// Restore the painting's name*
+
+            canvasName.value = savedPainting.name;
+
+            *// Draw the saved image onto the canvas*
+
+            ctx.drawImage(img, 0, 0);
+
+            *// Reset drawing state*
+
+            isDrawing = false;
+
+        };
+
+        img.src = savedPainting.image;
+
+    });
+
+}
+
+brushTool.addEventListener('click', () => {
+
+    currentTool = pen();
+
+});
+
+eraserTool.addEventListener('click', () => {
+
+    currentTool = eraser();
+
+});

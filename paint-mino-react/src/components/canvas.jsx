@@ -1,46 +1,55 @@
 
 import { useLocation, useNavigate } from 'react-router'
-import {useRef} from 'react'
+import { drawingTools } from './drawingTools'
+import {useState, useRef} from 'react'
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
-    let isDrawing = useRef(false)
-    let lastX = useRef(0)
-    let lastY = useRef(0)
+    const [brushSize, setbrushSize] = useState(2)
+    const [eraserSize, seteraserSize] = useState(2)
+
+    const [activeTool, setActiveTool] = useState('pen')
 
     const canvasRef = useRef(null)
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const drawingtools = drawingTools()
 
     const location = useLocation()
     const canvasData = location.state
 
+    let isDrawing = useRef(false)
+    let lastX = useRef(0)
+    let lastY = useRef(0)
+    let currenttool = useRef(drawingtools.pen)
+
     function pointerDown(e) {
         isDrawing.current = true
 
-        lastX.current = e.offsetX;
-        lastY.current = e.offsetY;
+        lastX.current = e.nativeEvent.offsetX;
+        lastY.current = e.nativeEvent.offsetY;
     }
 
     function pointerMove(e) {
-        if (isDrawing) {
-            const x = e.offsetX
-            const y = e.offsetY
+        if (isDrawing.current) {
+            const x = e.nativeEvent.offsetX
+            const y = e.nativeEvent.offsetY
 
-            ctx.beginPath(); 
-            ctx.moveTo(lastX, lastY); 
-            ctx.lineTo(x, y); 
-            ctx.strokeStyle = 'black'; 
-            ctx.lineWidth = 2; 
-            ctx.stroke();
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext('2d');
 
-            lastX = x
-            lastY = y
+            if (activeTool === 'pen') {
+                drawingtools.pen(ctx, lastX.current, lastY.current, x, y, brushSize)
+            } else if (activeTool === 'eraser') {
+                drawingtools.eraser(ctx, lastX.current, lastY.current, x, y, brushSize, eraserSize)
+            }
+
+
+            lastX.current = x
+            lastY.current = y
         }
     }
 
     function pointerUp() {
-        isDrawing = false
+        isDrawing.current = false
     }
 
     if (!canvasData) {
@@ -51,7 +60,11 @@ function Canvas() {
     <>
     <div id="canvasContainer">
         <h1>{canvasData.name}</h1>
-        <canvas ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
+        <button onClick={() => setActiveTool('pen')} id='brushTool'>Pen</button>
+        <input id='brushSize' type='range' min={1} max={100} name='brushSize' value={brushSize} onChange={(e) => setbrushSize(Number(e.target.value))}/>
+        <button onClick={() => setActiveTool('eraser')} id='eraserTool'>Eraser</button>
+        <input id='eraserSize' type='range' min={1} max={100} name='eraserSize' value={eraserSize} onChange={(e) => seteraserSize(Number(e.target.value))}/>
+        <canvas ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} onMouseLeave={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
     </div>
     </>
   )

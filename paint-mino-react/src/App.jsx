@@ -45,7 +45,7 @@ function App() {
       }/>
       <Route path="/canvas" element={<Canvas />}/>
     </Routes>
-    
+
     {canvasData && (
       <div>
         <h2>Saved Canvas Settings</h2>
