@@ -67,7 +67,7 @@ function Canvas() {
         }
 
         console.log(savedPainting)
-        localStorage.setItem("myPaintings", savedPainting)
+        localStorage.setItem("myPaintings", JSON.stringify(savedPainting));
     }
 
   return (
