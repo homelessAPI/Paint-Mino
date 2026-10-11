@@ -1,5 +1,5 @@
 
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { drawingTools } from './drawingTools'
 import {useState, useRef} from 'react'
 import '../assets/CSS/canvas.css'
@@ -10,6 +10,7 @@ function Canvas() {
 
     const [activeTool, setActiveTool] = useState('pen')
 
+    const navigate = useNavigate()
     const canvasRef = useRef(null)
     const drawingtools = drawingTools()
 
@@ -55,15 +56,31 @@ function Canvas() {
         return (
             <p>No canvas data available. Please create a canvas first.</p>
         )}
+
+    function saveImage() {
+        const canvasImage = canvasRef.current.toDataURL()
+        const savedPainting = {
+            name: canvasData.name,
+            width: canvasData.width,
+            height: canvasData.height,
+            image: canvasImage
+        }
+
+        console.log(savedPainting)
+        localStorage.setItem("myPaintings", savedPainting)
+    }
+
   return (
     <>
     <div id="canvasContainer">
         <h1>{canvasData.name}</h1>
+        <button onClick={()=> navigate('/')}>Setup</button>
         <button onClick={() => setActiveTool('pen')} id='brushTool'>Pen</button>
         <input id='brushSize' type='range' min={1} max={100} name='brushSize' value={brushSize} onChange={(e) => setbrushSize(Number(e.target.value))}/>
         <button onClick={() => setActiveTool('eraser')} id='eraserTool'>Eraser</button>
         <input id='eraserSize' type='range' min={1} max={200} name='eraserSize' value={eraserSize} onChange={(e) => seteraserSize(Number(e.target.value))}/>
-        <canvas ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} onMouseLeave={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
+        <canvas name='canvas' ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} onMouseLeave={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
+        <button onClick={saveImage} >Save Image</button>
     </div>
     </>
   )

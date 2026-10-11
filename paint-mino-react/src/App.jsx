@@ -5,6 +5,7 @@ import Canvas from './components/canvas.jsx'
 import './App.css'
 
 function App() {
+  const savedPaintings = localStorage.getItem('myPaintings') ? JSON.parse(localStorage.getItem('myPaintings')) : [];
   const [canvasData, setCanvasData] = useState(null)
   const navigate = useNavigate()
   
@@ -30,18 +31,33 @@ function App() {
 
     <Routes>
       <Route path="/" element={
-        <form onSubmit={handleSubmit}>
-      <label htmlFor="canvasName">Canvas Name:</label>
-      <input type="text" id="canvasName" name="canvasName" required />
-      
-      <label htmlFor="width">Width:</label>
-      <input type="number" id="width" name="width" required />
+        <div>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="canvasName">Canvas Name:</label>
+            <input type="text" id="canvasName" name="canvasName" required />
+            
+            <label htmlFor="width">Width:</label>
+            <input type="number" id="width" name="width" required />
 
-      <label htmlFor="height">Height:</label>
-      <input type="number" id="height" name="height" required />
+            <label htmlFor="height">Height:</label>
+            <input type="number" id="height" name="height" required />
 
-      <button type="submit">Create Canvas</button>
-    </form>
+            <button type="submit">Create Canvas</button>
+          </form>
+
+          <div id='savedImages'>
+            <h1>Saved Paintings</h1>
+            <div id="savedImagesContainer">
+              {savedPaintings.map((painting) =>
+              <div>
+                <img src={painting.image} />
+                <h3>painting.name</h3>
+              </div>)}
+            </div>
+          </div>
+        </div>
+
+    
       }/>
       <Route path="/canvas" element={<Canvas />}/>
     </Routes>
