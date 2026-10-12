@@ -61,30 +61,24 @@ function Canvas() {
         )}
 
     function saveImage() {
+        const canvasImage = canvasRef.current.toDataURL()
         
-function saveImage() {
-    const canvasImage = canvasRef.current.toDataURL()
+        const savedPainting = {
+            id: canvasData.id || canvasData.name,
+            name: canvasData.name,
+            width: canvasData.width,
+            height: canvasData.height,
+            image: canvasImage
+        }
+        let savedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || []
+        const existingIndex = savedPaintings.findIndex(p => p.name === canvasData.name)
+        if (existingIndex !== -1) {
+            savedPaintings[existingIndex] = savedPainting
+        } else {
+            savedPaintings.push(savedPainting)
+        }
 
-    const savedPainting = {
-        name: canvasData.name,
-        width: canvasData.width,
-        height: canvasData.height,
-        image: canvasImage
-    }
-
-    const savedPaintings =
-        JSON.parse(localStorage.getItem("myPaintings")) || []
-
-    savedPaintings.push(savedPainting)
-
-    console.log(savedPaintings)
-
-    localStorage.setItem(
-        "myPaintings",
-        JSON.stringify(savedPaintings)
-    )
-}
-
+        localStorage.setItem("myPaintings", JSON.stringify(savedPaintings));
     }
 
   return (

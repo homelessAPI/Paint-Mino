@@ -28,6 +28,10 @@ function App() {
     navigate('/canvas', {state: newCanvasData})
     console.log('Canvas Data:', canvasData)
   }
+
+  function reopeningCanvas(){
+    console.log("successful")
+  }
   return (
     <>
     <h1>Paint Mino</h1>
@@ -53,8 +57,10 @@ function App() {
             <div id="savedImagesContainer">
               {savedPaintings.map((painting) => (
                   <div key={painting.name}>
-                      <img src={painting.image} alt={painting.name} />
-                      <h3>{painting.name}</h3>
+                     <button onClick={reopeningCanvas}>
+                       <img src={painting.image} alt={painting.name} />
+                       <h3>{painting.name}</h3>
+                     </button>
                   </div>
               ))}
             </div>
