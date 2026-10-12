@@ -61,16 +61,30 @@ function Canvas() {
         )}
 
     function saveImage() {
-        const canvasImage = canvasRef.current.toDataURL()
-        const savedPainting = {
-            name: canvasData.name,
-            width: canvasData.width,
-            height: canvasData.height,
-            image: canvasImage
-        }
+        
+function saveImage() {
+    const canvasImage = canvasRef.current.toDataURL()
 
-        console.log(savedPainting)
-        localStorage.setItem("myPaintings", JSON.stringify(savedPainting));
+    const savedPainting = {
+        name: canvasData.name,
+        width: canvasData.width,
+        height: canvasData.height,
+        image: canvasImage
+    }
+
+    const savedPaintings =
+        JSON.parse(localStorage.getItem("myPaintings")) || []
+
+    savedPaintings.push(savedPainting)
+
+    console.log(savedPaintings)
+
+    localStorage.setItem(
+        "myPaintings",
+        JSON.stringify(savedPaintings)
+    )
+}
+
     }
 
   return (
