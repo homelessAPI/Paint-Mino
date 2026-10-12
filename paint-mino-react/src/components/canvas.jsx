@@ -49,7 +49,10 @@ function Canvas() {
     }
 
     function pointerUp() {
-        isDrawing.current = false
+        if (isDrawing.current) {
+            isDrawing.current = false
+            saveImage()
+        }
     }
 
     if (!canvasData) {

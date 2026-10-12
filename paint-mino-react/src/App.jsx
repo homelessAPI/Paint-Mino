@@ -5,7 +5,10 @@ import Canvas from './components/canvas.jsx'
 import './App.css'
 
 function App() {
-  const savedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
+  const storedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
+  const savedPaintings = Array.isArray(storedPaintings)
+    ? storedPaintings
+    : [storedPaintings];
   const [canvasData, setCanvasData] = useState(null)
   const navigate = useNavigate()
   
@@ -48,11 +51,12 @@ function App() {
           <div id='savedImages'>
             <h1>Saved Paintings</h1>
             <div id="savedImagesContainer">
-              {savedPaintings.map((painting) =>
-              <div>
-                <img src={painting.image} />
-                <h3>{painting.name}</h3>
-              </div>)}
+              {savedPaintings.map((painting) => (
+                  <div key={painting.name}>
+                      <img src={painting.image} alt={painting.name} />
+                      <h3>{painting.name}</h3>
+                  </div>
+              ))}
             </div>
           </div>
         </div>
