@@ -29,15 +29,20 @@ function App() {
     console.log('Canvas Data:', canvasData)
   }
 
-  function openPainting(paintingName){
-    const paintings = JSON.parse(localStorage.getItem('myPaintings'))
-    for (const i in paintings) {
-      if (i.name === paintingName){
-        navigate('/canvas', { state: painting })
-        console.log("successful")
-        return;
-      }
+  function openPainting(paintingName) {
+    console.log("Clicked:", paintingName);
+
+    const paintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
+
+    for (const painting of paintings) {
+        if (painting.name === paintingName) {
+            console.log("Found painting:", painting);
+            navigate('/canvas', { state: painting });
+            return;
+        }
     }
+
+    console.log("Painting not found");
   }
 
   return (
