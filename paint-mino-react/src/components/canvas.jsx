@@ -1,7 +1,7 @@
 
 import { useLocation, useNavigate } from 'react-router'
 import { drawingTools } from './drawingTools'
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
@@ -17,9 +17,29 @@ function Canvas() {
     const location = useLocation()
     const canvasData = location.state
 
+
+
     let isDrawing = useRef(false)
     let lastX = useRef(0)
     let lastY = useRef(0)
+
+    useEffect(() => {
+    if (!canvasData?.image || !canvasRef.current) {
+        return;
+    }
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+    };
+
+    img.src = canvasData.image;
+}, [canvasData]);
+
+   
 
     function pointerDown(e) {
         isDrawing.current = true
@@ -62,7 +82,7 @@ function Canvas() {
 
     function saveImage() {
         const canvasImage = canvasRef.current.toDataURL()
-        
+
         const savedPainting = {
             id: canvasData.id || canvasData.name,
             name: canvasData.name,

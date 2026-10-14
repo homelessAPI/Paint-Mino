@@ -29,9 +29,17 @@ function App() {
     console.log('Canvas Data:', canvasData)
   }
 
-  function reopeningCanvas(){
-    console.log("successful")
+  function openPainting(paintingName){
+    const paintings = JSON.parse(localStorage.getItem('myPaintings'))
+    for (const i in paintings) {
+      if (i.name === paintingName){
+        navigate('/canvas', { state: painting })
+        console.log("successful")
+        return;
+      }
+    }
   }
+
   return (
     <>
     <h1>Paint Mino</h1>
@@ -57,7 +65,7 @@ function App() {
             <div id="savedImagesContainer">
               {savedPaintings.map((painting) => (
                   <div key={painting.name}>
-                     <button onClick={reopeningCanvas}>
+                     <button onClick={() => openPainting(painting.name)}>
                        <img src={painting.image} alt={painting.name} />
                        <h3>{painting.name}</h3>
                      </button>
