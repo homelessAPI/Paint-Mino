@@ -1,19 +1,24 @@
 export function drawingTools() {
+   
     function pen(ctx, lastX, lastY, x, y, brushSize) {
-        ctx.globalCompositeOperation = 'source-over'; 
-        
+        ctx.globalCompositeOperation = 'source-over';
+
         // Declare the path coordinates
-        ctx.beginPath(); 
-        ctx.moveTo(lastX, lastY); 
-        ctx.lineTo(x, y); 
-        
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+
         // Set styles and draw
         ctx.strokeStyle = 'black';
         ctx.lineWidth = brushSize;
-        ctx.lineCap = 'round'
-        ctx.lineJoin = 'round'
-        ctx.globalAlpha = 0.85
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.globalAlpha = 0.5;
+
         ctx.stroke();
+
+        // Reset opacity
+        ctx.globalAlpha = 1;
     }
 
     function pencil(){
