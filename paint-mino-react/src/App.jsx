@@ -10,8 +10,6 @@ function App() {
     ? storedPaintings
     : [storedPaintings];
   const [canvasData, setCanvasData] = useState(null)
-  const [selecatedPaintings, setSelectedPaintings] = useState(null)
-  const [pressTimer, setPressTimer] = useState(0)
   const navigate = useNavigate()
   
   function handleSubmit(event) {
@@ -47,32 +45,6 @@ function App() {
     console.log("Painting not found");
   }
 
-  function selcetionSystem (name) {
-    const timer = setTimeout(() => {
-      selcetionSystem(name)
-    }, 500);
-
-    setPressTimer(timer)
-    const painting = (name) => {setSelectedPaintings((selecatedPaintings) => selecatedPaintings.concat(name))}
-    console.log("pressed:", name)
-  }
-
-  function cancelLongPress() {
-    if (pressTimer) {
-        clearTimeout(pressTimer);
-        setPressTimer(null);
-    }
-}
-  function deletePainting(name) {
-    const paintings = JSON.parse(localStorage.getItem('myPaintings'))
-
-    const index = paintings.findIndex(painting => painting.name === name)
-
-    if (index !== -1) {
-      paintings.splice(index, 1)
-    }
-  }
-
   return (
     <>
     <h1>Paint Mino</h1>
@@ -96,22 +68,11 @@ function App() {
           <div id='savedImages'>
             <h1>Saved Paintings</h1>
             <div id="savedImagesContainer">
-            <button  >Delete</button>
               {savedPaintings.map((painting) => (
                   <div key={painting.name}>
                      <button onClick={() => openPainting(painting.name)}>
-                       <div 
-                        onPointerDown={() => selcetionSystem(painting.name)}
-                        onPointerUp={cancelLongPress}
-                        onPointerLeave={cancelLongPress}
-                        onContextMenu={(event) => {
-                        event.preventDefault();
-                        selcetionSystem(painting.name);
-                       }}
-                       >
-                        <img src={painting.image} alt={painting.name} />
-                        <h3>{painting.name}</h3>
-                       </div>
+                       <img src={painting.image} alt={painting.name} />
+                       <h3>{painting.name}</h3>
                      </button>
                   </div>
               ))}
