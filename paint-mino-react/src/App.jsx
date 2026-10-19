@@ -1,15 +1,19 @@
 
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import { useNavigate, Routes, Route } from 'react-router'
 import Canvas from './components/canvas.jsx'
 import './App.css'
 
 function App() {
-  const storedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
-  const savedPaintings = Array.isArray(storedPaintings)
-    ? storedPaintings
-    : [storedPaintings];
+
   const [canvasData, setCanvasData] = useState(null)
+  const [savedPaintings, setSavedPaintings] = useState(() => {
+    const storedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
+    return Array.isArray(storedPaintings)? storedPaintings : [storedPaintings]; 
+  })
+  const selectedPaintings = useRef([])
+  const timerRef = useRef(null)
+  const isLongPressRef = useRef(false)
   const navigate = useNavigate()
   
   function handleSubmit(event) {
@@ -30,6 +34,7 @@ function App() {
   }
 
   function openPainting(paintingName) {
+    if (isLongPressRef.current) {return "Long click enable, canvas open disabled"}
     console.log("Clicked:", paintingName);
 
     const paintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
@@ -44,6 +49,53 @@ function App() {
 
     console.log("Painting not found");
   }
+
+  function selectionSystem(painting){
+    selectedPaintings.current = [painting]
+    console.log("painting selected:", selectedPaintings.current)
+    
+  }
+
+  const handlePointerDown = (painting) => {
+    isLongPressRef.current = false
+    timerRef.current = setTimeout(() => {
+    isLongPressRef.current = true; 
+    console.log("handle pointer down works")
+    selectionSystem(painting);
+  }, 600);
+  }
+
+  const handlePointerUp = (painting) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    if (!isLongPressRef.current) {
+      openPainting(painting.name)
+  }
+  };
+
+  const handlePointerCancel = () => {
+  if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }
+
+  const handleDelete = () => {
+  const namesToDelete = selectedPaintings.current.map(p => p.name);
+  
+  if (namesToDelete.length === 0) return;
+
+  const updatedPaintings = savedPaintings.filter(
+    painting => !namesToDelete.includes(painting.name)
+  );
+
+  setSavedPaintings(updatedPaintings);
+
+  localStorage.setItem("myPaintings", JSON.stringify(updatedPaintings));
+
+  selectedPaintings.current = [];
+};
+
 
   return (
     <>
@@ -68,9 +120,15 @@ function App() {
           <div id='savedImages'>
             <h1>Saved Paintings</h1>
             <div id="savedImagesContainer">
+              <button onClick={handleDelete}>Delete</button>
               {savedPaintings.map((painting) => (
                   <div key={painting.name}>
-                     <button onClick={() => openPainting(painting.name)}>
+                     <button
+                      onPointerDown={() => handlePointerDown(painting)}
+                      onPointerUp={() => handlePointerUp(painting)}
+                      onPointerLeave={() => handlePointerCancel}
+                      onPointerCancel={() => handlePointerCancel}
+                      >
                        <img src={painting.image} alt={painting.name} />
                        <h3>{painting.name}</h3>
                      </button>
