@@ -1,49 +1,43 @@
-
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 import { drawingTools } from './drawingTools'
-import {useState, useRef, useEffect} from 'react'
+import { saveImage } from './features'
+import { useState, useRef, useEffect } from 'react'
+import ToolBar from './toolbar' // Default import is perfect
 import '../assets/CSS/canvas.css'
 
 function Canvas() {
     const [brushSize, setbrushSize] = useState(2)
     const [eraserSize, seteraserSize] = useState(2)
+ 
+    const [activeTool, setActiveTool] = useState('pen') 
 
-    const [activeTool, setActiveTool] = useState('pen')
-
-    const navigate = useNavigate()
     const canvasRef = useRef(null)
     const drawingtools = drawingTools()
 
     const location = useLocation()
     const canvasData = location.state
 
-
+    const handleAutoSave = () => saveImage(canvasRef, canvasData)
 
     let isDrawing = useRef(false)
     let lastX = useRef(0)
     let lastY = useRef(0)
 
     useEffect(() => {
-    if (!canvasData?.image || !canvasRef.current) {
-        return;
-    }
+        if (!canvasData?.image || !canvasRef.current) return;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
 
-    img.onload = () => {
-        ctx.drawImage(img, 0, 0);
-    };
-
-    img.src = canvasData.image;
-}, [canvasData]);
-
-   
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+        };
+        img.src = canvasData.image;
+    }, [canvasData]);
 
     function pointerDown(e) {
         isDrawing.current = true
-
         lastX.current = e.nativeEvent.offsetX;
         lastY.current = e.nativeEvent.offsetY;
     }
@@ -52,7 +46,6 @@ function Canvas() {
         if (isDrawing.current) {
             const x = e.nativeEvent.offsetX
             const y = e.nativeEvent.offsetY
-
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
 
@@ -62,7 +55,6 @@ function Canvas() {
                 drawingtools.eraser(ctx, lastX.current, lastY.current, x, y, brushSize, eraserSize)
             }
 
-
             lastX.current = x
             lastY.current = y
         }
@@ -71,50 +63,44 @@ function Canvas() {
     function pointerUp() {
         if (isDrawing.current) {
             isDrawing.current = false
-            saveImage()
+            handleAutoSave()
         }
     }
 
     if (!canvasData) {
-        return (
-            <p>No canvas data available. Please create a canvas first.</p>
-        )}
-
-    function saveImage() {
-        const canvasImage = canvasRef.current.toDataURL()
-
-        const savedPainting = {
-            id: canvasData.id || canvasData.name,
-            name: canvasData.name,
-            width: canvasData.width,
-            height: canvasData.height,
-            image: canvasImage
-        }
-        let savedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || []
-        const existingIndex = savedPaintings.findIndex(p => p.name === canvasData.name)
-        if (existingIndex !== -1) {
-            savedPaintings[existingIndex] = savedPainting
-        } else {
-            savedPaintings.push(savedPainting)
-        }
-
-        localStorage.setItem("myPaintings", JSON.stringify(savedPaintings));
+        return <p>No canvas data available. Please create a canvas first.</p>
     }
 
-  return (
-    <>
-    <div id="canvasContainer">
-        <h1>{canvasData.name}</h1>
-        <button onClick={()=> navigate('/')}>Setup</button>
-        <button onClick={() => setActiveTool('pen')} id='brushTool'>Pen</button>
-        <input id='brushSize' type='range' min={1} max={100} name='brushSize' value={brushSize} onChange={(e) => setbrushSize(Number(e.target.value))}/>
-        <button onClick={() => setActiveTool('eraser')} id='eraserTool'>Eraser</button>
-        <input id='eraserSize' type='range' min={1} max={200} name='eraserSize' value={eraserSize} onChange={(e) => seteraserSize(Number(e.target.value))}/>
-        <canvas name='canvas' ref={canvasRef} id='canvas' onMouseDown={pointerDown} onMouseMove={pointerMove} onMouseUp={pointerUp} onMouseLeave={pointerUp} width={canvasData.width} height={canvasData.height}></canvas>
-        <button onClick={saveImage} >Save Image</button>
-    </div>
-    </>
-  )
+    return (
+        <div id="canvasFileContainer">
+            {/* 2. Pass variables and setters into ToolBar as Props */}
+            <ToolBar 
+                canvasRef={canvasRef} 
+                canvasData={canvasData}
+                activeTool={activeTool}
+                setActiveTool={setActiveTool}
+                brushSize={brushSize}
+                setbrushSize={setbrushSize}
+                eraserSize={eraserSize}
+                seteraserSize={seteraserSize}
+            />
+            
+            <div id='canvasContainer'>
+                <h1>{canvasData.name}</h1>
+                <canvas 
+                    name='canvas' 
+                    ref={canvasRef} 
+                    id='canvas' 
+                    onMouseDown={pointerDown} 
+                    onMouseMove={pointerMove} 
+                    onMouseUp={pointerUp} 
+                    onMouseLeave={pointerUp} 
+                    width={canvasData.width} 
+                    height={canvasData.height}
+                />
+            </div>
+        </div>
+    )
 }
 
 export default Canvas

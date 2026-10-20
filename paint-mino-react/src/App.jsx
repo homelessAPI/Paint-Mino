@@ -2,7 +2,7 @@
 import {useState, useRef} from 'react'
 import { useNavigate, Routes, Route } from 'react-router'
 import Canvas from './components/canvas.jsx'
-import './App.css'
+import './assets/CSS/App.css'
 
 function App() {
 
@@ -99,12 +99,13 @@ function App() {
 
   return (
     <>
-    <h1>Paint Mino</h1>
 
     <Routes>
       <Route path="/" element={
         <div>
-          <form onSubmit={handleSubmit}>
+          <h1 id='mainName'>Paint Mino</h1>
+          <div id='canvasCreation'>
+            <form onSubmit={handleSubmit}>
             <label htmlFor="canvasName">Canvas Name:</label>
             <input type="text" id="canvasName" name="canvasName" required />
             
@@ -117,12 +118,14 @@ function App() {
             <button type="submit">Create Canvas</button>
           </form>
 
+          </div>
           <div id='savedImages'>
             <h1>Saved Paintings</h1>
             <div id="savedImagesContainer">
               <button onClick={handleDelete}>Delete</button>
-              {savedPaintings.map((painting) => (
-                  <div key={painting.name}>
+              <div id='paintingsList'>
+                {savedPaintings.map((painting) => (
+                  <div id='painting' key={painting.name}>
                      <button
                       onPointerDown={() => handlePointerDown(painting)}
                       onPointerUp={() => handlePointerUp(painting)}
@@ -134,6 +137,7 @@ function App() {
                      </button>
                   </div>
               ))}
+              </div>
             </div>
           </div>
         </div>

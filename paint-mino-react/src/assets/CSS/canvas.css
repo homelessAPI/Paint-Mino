@@ -1,5 +1,16 @@
+#canvasFileContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+#canvasContainer {
+    display: flex;
+    justify-content: center;
+}
+
 #canvas {
     border: 3px solid rgb(9, 9, 9);
+    border-radius: 0px;
     display: block;
     background-color: rgb(211, 210, 214);
 }
