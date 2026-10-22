@@ -7,6 +7,7 @@ import './assets/CSS/App.css'
 function App() {
 
   const [canvasData, setCanvasData] = useState(null)
+  const [deleteButtonColor, setDeleteButtonColor] = useState('rgb(9, 9, 9)')
   const [savedPaintings, setSavedPaintings] = useState(() => {
     const storedPaintings = JSON.parse(localStorage.getItem('myPaintings')) || [];
     return Array.isArray(storedPaintings)? storedPaintings : [storedPaintings]; 
@@ -23,6 +24,7 @@ function App() {
     const formData = new FormData(form)
 
     const newCanvasData = {
+      id: crypto.randomUUID(),
       name: formData.get('canvasName'),
       width: formData.get('width'),
       height: formData.get('height'),
@@ -42,7 +44,7 @@ function App() {
     for (const painting of paintings) {
         if (painting.name === paintingName) {
             console.log("Found painting:", painting);
-            navigate('/canvas', { state: painting });
+            navigate(`/canvas/${painting.id}`, { state: painting });
             return;
         }
     }
@@ -122,15 +124,15 @@ function App() {
           <div id='savedImages'>
             <h1>Saved Paintings</h1>
             <div id="savedImagesContainer">
-              <button onClick={handleDelete}>Delete</button>
+              <button onClick={handleDelete }>Delete</button>
               <div id='paintingsList'>
                 {savedPaintings.map((painting) => (
                   <div id='painting' key={painting.name}>
                      <button
                       onPointerDown={() => handlePointerDown(painting)}
                       onPointerUp={() => handlePointerUp(painting)}
-                      onPointerLeave={() => handlePointerCancel}
-                      onPointerCancel={() => handlePointerCancel}
+                      onPointerLeave={handlePointerCancel}
+                      onPointerCancel={handlePointerCancel}
                       >
                        <img src={painting.image} alt={painting.name} />
                        <h3>{painting.name}</h3>
@@ -144,17 +146,9 @@ function App() {
 
     
       }/>
-      <Route path="/canvas" element={<Canvas />}/>
+      <Route path="/canvas" element={<Canvas />} />
+      <Route path="/canvas/:canvasId" element={<Canvas />} />   
     </Routes>
-
-    {canvasData && (
-      <div>
-        <h2>Saved Canvas Settings</h2>
-        <p>Name: {canvasData.name}</p>
-        <p>Width: {canvasData.width}</p>
-        <p>Height: {canvasData.height}</p>
-      </div>
-    )}
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router'
+import { useLocation, useParams  } from 'react-router'
 import { drawingTools } from './drawingTools'
 import { saveImage } from './features'
 import { useState, useRef, useEffect } from 'react'
@@ -15,7 +15,20 @@ function Canvas() {
     const drawingtools = drawingTools()
 
     const location = useLocation()
-    const canvasData = location.state
+    const { canvasId } = useParams()
+
+    const canvasData = (() => {
+        const savedPaintings =
+            JSON.parse(localStorage.getItem('myPaintings')) || []
+
+        if (canvasId) {
+            return savedPaintings.find(
+                painting => painting.id === canvasId
+            ) || location.state
+        }
+
+        return location.state
+    })()
 
     const handleAutoSave = () => saveImage(canvasRef, canvasData)
 
@@ -24,18 +37,19 @@ function Canvas() {
     let lastY = useRef(0)
 
     useEffect(() => {
-        if (!canvasData?.image || !canvasRef.current) return;
+    if (!canvasData?.image || !canvasRef.current) return;
 
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
 
-        img.onload = () => {
-            ctx.drawImage(img, 0, 0);
-        };
-        img.src = canvasData.image;
+    img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+    };
+
+    img.src = canvasData.image;
     }, [canvasData]);
-
     function pointerDown(e) {
         isDrawing.current = true
         lastX.current = e.nativeEvent.offsetX;

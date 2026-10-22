@@ -1,8 +1,7 @@
-* {
-    
-    border-radius: 50px;
-}
 
+body {
+    overflow-y: auto;
+}
 #mainName {
     display: flex;
     justify-content: center;
@@ -30,6 +29,7 @@
 #savedImagesContainer button {
     padding: 5px;
     margin: 5px;
+    border-radius: 5px;
 }
 
 #paintingsList {
@@ -41,3 +41,4 @@
 #painting button {
     border-radius: 30px;
 }
+
