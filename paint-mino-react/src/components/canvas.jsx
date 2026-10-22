@@ -74,7 +74,8 @@ function Canvas() {
     return (
         <div id="canvasFileContainer">
             {/* 2. Pass variables and setters into ToolBar as Props */}
-            <ToolBar 
+            <div id='toolbarContainer'>
+                <ToolBar
                 canvasRef={canvasRef} 
                 canvasData={canvasData}
                 activeTool={activeTool}
@@ -84,20 +85,23 @@ function Canvas() {
                 eraserSize={eraserSize}
                 seteraserSize={seteraserSize}
             />
+            </div>
             
             <div id='canvasContainer'>
                 <h1>{canvasData.name}</h1>
-                <canvas 
+                <div id='canvasVeiwport'>
+                    <canvas 
                     name='canvas' 
                     ref={canvasRef} 
                     id='canvas' 
-                    onMouseDown={pointerDown} 
-                    onMouseMove={pointerMove} 
-                    onMouseUp={pointerUp} 
-                    onMouseLeave={pointerUp} 
+                    onPointerDown={pointerDown} 
+                    onPointerMove={pointerMove} 
+                    onPointerUp={pointerUp} 
+                    onPointerLeave={pointerUp} 
                     width={canvasData.width} 
                     height={canvasData.height}
-                />
+                    />
+                </div>
             </div>
         </div>
     )
