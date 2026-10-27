@@ -1,45 +1,68 @@
-# Paint Mino 🎨
+# Paint Mino
 
-**A digital painting application built to explore better brushes, natural drawing experiences, and creative freedom.**
+## Description
 
-Paint Mino is a personal digital painting project built with React and JavaScript. The goal is to develop a drawing environment with expressive, customizable brushes and an intuitive canvas workflow, while learning the engineering behind digital art software.
+Paint Mino is a personal digital painting application built with React, JavaScript, and the HTML Canvas API.
 
-The project is currently under active development.
+It started as a project to learn programming by building something I actually want to use: a painting application. The goal is to keep developing it into something capable of supporting my own illustration workflow, with unique brushes and drawing tools that feel good to use.
 
-## ✨ Features
+This project is a learning experience, so things will change, break, and improve as I figure out how to build them. The long-term goal is to create a painting application that can stand on its own.
 
-### Currently implemented
-- **Canvas creation** — create canvases with custom names and dimensions.
-- **Drawing tools** — draw directly on an HTML canvas.
-- **Brush and eraser** — switch between drawing and erasing.
-- **Saved paintings** — save drawings locally and reopen them later.
-- **Automatic saving** — preserve canvas images in browser storage after drawing.
+## Rules
 
-### In development
-- **Advanced brush engine** — develop distinct ink, pencil, round, and flat brushes.
-- **Improved stroke quality** — smoother lines and more natural brush behavior.
-- **Brush customization** — configurable size, opacity, and other brush properties.
-- **Canvas navigation** — zoom, pan, and rotate the workspace.
-- **Undo and redo** — build a reliable history system for editing strokes.
+1. The application should remain focused on digital painting and illustration.
+2. New features are welcome, but they should work with the existing application rather than break it.
+3. Features should prioritize the actual drawing experience instead of adding complexity for its own sake.
+4. This is a learning project. The code should continue to evolve as I learn better ways to build things.
 
-These features are planned or in progress and may change as development continues.
+## Technologies Used
 
-## 🛠️ Built With
+- JavaScript
+- React
+- HTML Canvas API
+- CSS
+- Vite
 
-- **React** — user interface and component structure.
-- **JavaScript** — application logic and drawing behavior.
-- **HTML Canvas API** — rendering strokes and manipulating image pixels.
-- **CSS** — layout and visual styling.
-- **Vite** — development server and build tooling.
-- **Browser localStorage** — persistence for saved paintings.
+## Current Features
 
-## 🚀 Getting Started
+- Create canvases with custom names and dimensions
+- Draw on a canvas using available brushes
+- Change brush size
+- Erase parts of a drawing
+- Save paintings locally
+- Reopen saved paintings
 
-### Prerequisites
+## Version History
 
-Install [Node.js](https://nodejs.org/) and npm.
+**Version 1.0** - Initial painting canvas and drawing tools
 
-### Installation
+**Version 1.1** - Saved paintings and canvas persistence
+
+*Version history will be updated as the application develops.*
+
+## Planned Features
+
+- More distinctive brushes
+- Improved brush behavior and stroke quality
+- Undo and redo
+- PNG export
+- Canvas zoom, pan, and rotation
+- More control over individual brush settings
+
+## Project Goals
+
+- Build a painting application I genuinely want to use.
+- Learn how drawing applications and brush engines work.
+- Develop brushes with their own identities rather than simply changing their sizes and colors.
+- Keep improving the application without losing sight of the drawing experience.
+
+## Limitations
+
+Paint Mino is still under development. Features may be incomplete, and the application is not yet intended to replace established painting software.
+
+Paintings are currently saved locally in the browser, so they are not automatically synced between devices.
+
+## Installation
 
 Clone the repository:
 
@@ -47,7 +70,7 @@ Clone the repository:
 git clone https://github.com/homelessAPI/Paint-Mino.git
 ```
 
-Navigate to the React application directory:
+Navigate to the React project:
 
 ```bash
 cd Paint-Mino/paint-mino-react
@@ -64,51 +87,3 @@ Start the development server:
 ```bash
 npm run dev
 ```
-
-Open the local URL printed in your terminal by Vite.
-
-## 🖌️ Project Goals
-
-Paint Mino is being developed around a few core goals:
-
-- **Brush identity:** each tool should behave differently rather than simply changing color or line width.
-- **Drawing quality:** strokes should feel smooth, responsive, and predictable.
-- **Creative control:** artists should eventually be able to customize their tools to suit their workflows.
-- **Reliable persistence:** drawings should remain available when the application is reopened.
-- **Learning through implementation:** build a deeper understanding of graphics programming, input handling, and application architecture.
-
-The long-term ambition is to create a painting application that prioritizes expressive brush behavior and a comfortable illustration workflow.
-
-## 🗺️ Roadmap
-
-- [x] Create and open canvases
-- [x] Draw and erase
-- [x] Save and reopen paintings
-- [ ] Improve brush rendering and stroke smoothing
-- [ ] Implement distinct brush engines
-- [ ] Add undo and redo
-- [ ] Add zoom, pan, and rotation
-- [ ] Improve workspace layout and usability
-- [ ] Explore stylus pressure and tilt support
-- [ ] Investigate more advanced paint and pigment simulation
-
-## 📚 What I'm Learning
-
-This project is also an opportunity to develop practical skills in:
-
-- React components, state, and references
-- JavaScript module design
-- Canvas rendering and drawing algorithms
-- Pointer input and gesture handling
-- Image persistence and application architecture
-- Performance considerations for graphics applications
-
-## ⚠️ Current Limitations
-
-Paint Mino is an early-stage project, not yet a replacement for established painting applications. Brush behavior, editing workflows, and workspace controls are still evolving.
-
-Saved paintings are currently stored in the browser's local storage, so they are not automatically synchronized between browsers or devices. Exporting important artwork separately is recommended.
-
-## 📄 License
-
-No license has been specified yet. Until one is added to the repository, the project should not be assumed to grant permission for reuse, redistribution, or modification.
