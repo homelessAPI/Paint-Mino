@@ -20,14 +20,15 @@ function ToolBar({
             <nav>
                  <button onClick={()=> navigate('/')}>Setup</button>
                 <button onClick={() => saveImage(canvasRef, canvasData)}>Save Image</button>
+
+                <select value={activeTool} onChange={(e) => setActiveTool(e.target.value)}>
+                    <option value='pen'>Pen</option>
+                    <option value='pencil'>Pencil</option>
+                    <option value='roundBrush'>Round Brush</option>
+                    <option value='flatBrush'>Flat Brush</option>
+                    <option value='gouacheBrush'>Gouache Brush</option>
+                </select>
                 
-                <button 
-                    onClick={() => setActiveTool('pen')} 
-                    id='brushTool'
-                    style={{ backgroundColor: activeTool === 'pen' ? '#ddd' : 'transparent' }}
-                >
-                    Pen
-                </button>
                 <button 
                     onClick={() => setActiveTool('eraser')} 
                     id='eraserTool'

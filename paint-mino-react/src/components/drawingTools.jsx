@@ -19,9 +19,11 @@ export function drawingTools() {
 
         // Reset opacity
         ctx.globalAlpha = 1;
+
+        console.log('pen')
     }
 
-    function pencil(){
+    function pencil(ctx, lastX, lastY, x, y, brushSize){
         ctx.globalCompositeOperation = 'source-over'; 
         
         // Declare the path coordinates
@@ -32,9 +34,14 @@ export function drawingTools() {
         // Set styles and draw
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = brushSize;
         ctx.strokeStyle = 'rgba(60, 60, 60, 0.4)'; 
         ctx.setLineDash([1, 2]); 
+
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        console.log('pencil')
 
     }
     function roundBrush(){}
@@ -56,6 +63,9 @@ export function drawingTools() {
 
     return {
         pen: pen,
+        pencil: pencil,
+        roundBrush: roundBrush,
+        flatBrush: flatBrush,
         eraser: eraser
     }
 }

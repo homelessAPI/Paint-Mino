@@ -49,7 +49,7 @@ function Canvas() {
     };
 
     img.src = canvasData.image;
-    }, [canvasData]);
+    }, [canvasData?.id, canvasData?.image]);
     function pointerDown(e) {
         isDrawing.current = true
         lastX.current = e.nativeEvent.offsetX;
@@ -64,8 +64,12 @@ function Canvas() {
             const ctx = canvas.getContext('2d');
 
             if (activeTool === 'pen') {
-                drawingtools.pen(ctx, lastX.current, lastY.current, x, y, brushSize)
-            } else if (activeTool === 'eraser') {
+                drawingtools.pen(ctx, lastX.current, lastY.current, x, y, brushSize)}
+            else if (activeTool === 'pencil') {
+                drawingtools.pen(ctx, lastX.current, lastY.current, x, y, brushSize)}
+            if (activeTool === 'roundBrush') {
+                drawingtools.pen(ctx, lastX.current, lastY.current, x, y, brushSize)}
+            else if (activeTool === 'eraser') {
                 drawingtools.eraser(ctx, lastX.current, lastY.current, x, y, brushSize, eraserSize)
             }
 
