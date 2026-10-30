@@ -6,7 +6,6 @@ Paint Mino is a personal digital painting application built with React, JavaScri
 
 It started as a project to learn programming by building something I actually want to use: a painting application. The goal is to keep developing it into something capable of supporting my own illustration workflow, with unique brushes and drawing tools that feel good to use.
 
-This project is a learning experience, so things will change, break, and improve as I figure out how to build them. The long-term goal is to create a painting application that can stand on its own.
 
 ## Rules
 
